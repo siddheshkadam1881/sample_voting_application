@@ -1,3 +1,35 @@
+Command Required to for build this application:
+
+
+    
+1)  Run redis build which is required for voting-app
+
+      -  cd /example-voting-app/vote/
+         1) docker run -d -p 5000:80 voting-app
+
+2)  create voting app image and run in deattach mode                                                                                                                                                                                                                                                                         -  cd /example-voting-app/vote/                                                                                                                                   1) docker build -t  voting-app .
+           2) docker run -d -p 5000:80 --link redis:redis voting-app
+
+3)  create postgres image of postgres database
+       
+      docker run -d --name=db  -e POSTGRES_HOST_AUTH_METHOD=trust postgres:9.4
+
+4) create image of work app and run with link
+
+
+         1) docker build -t worker .
+	 2) docker run -d --link redis:redis --link db:db worker
+
+5) create image of  result app and run with link
+
+	1) docker build -t result-app .
+	2) docker run -d -p 5001:80 --link db=db result-app
+            
+
+
+
+
+
 # Example Voting App
 
 A simple distributed application running across multiple Docker containers.
